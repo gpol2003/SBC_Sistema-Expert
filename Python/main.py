@@ -1,4 +1,6 @@
 #CLASSES
+import json
+
 class Building:
     def __init__(self):
         self.floors = []
@@ -35,7 +37,6 @@ class Room:
         self.name = name
         self.busy = False
         self.temperature = 0
-        self.weather = ""
         self.natural_light = False
         self.artificial_light = False
         self.ventilation = False
@@ -60,13 +61,34 @@ class Room:
         
         
 class Window:
-    def __init__(self):
+    def __init__(self, name):
         self.open = False
+        self.name = name
         
 
 #AUXILIAR FUNCTIONS
+def loadJson():
+    #Load data
+    f = open('Python/building_structure.json')
+    data = json.load(f)
+    
+    building = Building()
+    
+    for floor in data["floors"]:
+        new_floor = Floor(floor["name"])
+        for room in floor["rooms"]:
+            new_room = Room(room["name"])
+            for window in room["windows"]:
+                new_window = Window(window["name"])
+                new_room.windows.append(new_window)
+            new_floor.rooms.append(new_room)
+        building.floors.append(new_floor)
+        
+    f.close()
+    return building
+
 def transformBoolean(b):
-    if b == True:
+    if b:
         return "on"
     return "off"
 
@@ -91,7 +113,7 @@ def printResult(building, day, time, weather):
             room.checkVentilation(building.open, weather)
             room.checkAirConditioning(building.open, weather)
             room.checkHeating(building.open, weather)
-
+            
     #Printing building status
     print("Building status:")
     
@@ -109,164 +131,113 @@ def printResult(building, day, time, weather):
         
     print("Building alarm:")
     print("\tBuilding alarm:", transformBoolean(building.alarm))
-    
+
+def debugBuilding(building):
+    for floor in building.floors:
+        print(floor.name, floor.alarm)
+        for room in floor.rooms:
+            print(room.name, 
+                  room.busy,
+                  room.temperature,
+                  room.natural_light, 
+                  room.artificial_light,
+                  room.ventilation,
+                  room.air_conditioning,
+                  room.heating)
+            for window in room.windows:
+                print(window.name, window.open)
+                
 #TESTS   
-def test1():
+def test1(building):
     day = "Monday"
     time = 10
     temperature = 23
+
+    #FLOOR 1
+    #Windows conditions setting
+    building.floors[0].rooms[0].windows[0].open = True
+
+    building.floors[0].rooms[0].windows[1].open = False
     
-    #Windows creation
-    window1 = Window()
-    window1.open = True
+    #Rooms conditions setting
+    building.floors[0].rooms[0].busy = True
+    building.floors[0].rooms[0].temperature = 14
     
-    window2 = Window()
-    window2.open = False
+    building.floors[0].rooms[1].busy = True
+    building.floors[0].rooms[1].temperature = 25
     
-    #Rooms creation
-    room1 = Room("room1")
-    room1.busy = True
-    room1.temperature = 14
+    #FLOOR 2
+    #Windows conditions setting
+    building.floors[1].rooms[0].busy = False
+    building.floors[1].rooms[0].temperature = 15    
     
-    room2 = Room("room2")
-    room2.busy = True
-    room2.temperature = 25
+    return day, time, classifyTemperature(temperature)
     
-    room3 = Room("room3")
-    room3.busy = False
-    room3.temperature = 15
-    
-    #Adding windows to rooms
-    room1.windows.append(window1)
-    room1.windows.append(window2)
-    
-    #Floors creation
-    floor1 = Floor("floor1")
-    floor2 = Floor("floor2")
-    
-    #Adding rooms to floors
-    floor1.rooms.append(room1)
-    floor1.rooms.append(room2)
-    
-    floor2.rooms.append(room3)
-    
-    #Building creation
-    building = Building()
-    
-    #Adding floors to buildings
-    building.floors.append(floor1)
-    building.floors.append(floor2)
-    
-    return building, day, time, classifyTemperature(temperature)
-    
-def test2():
+def test2(building):
     day = "Monday"
     time = 10
     temperature = 12
-    
-    #Windows creation
-    window1 = Window()
-    window1.open = True
-    
-    window2 = Window()
-    window2.open = False
-    
-    #Rooms creation
-    room1 = Room("room1")
-    room1.busy = True
-    room1.temperature = 14
-    
-    room2 = Room("room2")
-    room2.busy = True
-    room2.temperature = 25
-    
-    room3 = Room("room3")
-    room3.busy = False
-    room3.temperature = 15
-    
-    #Adding windows to rooms
-    room1.windows.append(window1)
-    room1.windows.append(window2)
-    
-    #Floors creation
-    floor1 = Floor("floor1")
-    floor2 = Floor("floor2")
-    
-    #Adding rooms to floors
-    floor1.rooms.append(room1)
-    floor1.rooms.append(room2)
-    
-    floor2.rooms.append(room3)
-    
-    #Building creation
-    building = Building()
-    
-    #Adding floors to buildings
-    building.floors.append(floor1)
-    building.floors.append(floor2)
-    
-    return building, day, time, classifyTemperature(temperature)
 
-def test3():
+    #FLOOR 1
+    #Windows conditions setting
+    building.floors[0].rooms[0].windows[0].open = True
+
+    building.floors[0].rooms[0].windows[1].open = False
+    
+    #Rooms conditions setting
+    building.floors[0].rooms[0].busy = True
+    building.floors[0].rooms[0].temperature = 14
+    
+    building.floors[0].rooms[1].busy = True
+    building.floors[0].rooms[1].temperature = 25
+    
+    #FLOOR 2
+    #Windows conditions setting
+    building.floors[1].rooms[0].busy = False
+    building.floors[1].rooms[0].temperature = 15    
+    
+    return day, time, classifyTemperature(temperature)
+
+def test3(building):
     day = "Monday"
     time = 22
     temperature = 12
+
+    #FLOOR 1
+    #Windows conditions setting
+    building.floors[0].rooms[0].windows[0].open = True
+
+    building.floors[0].rooms[0].windows[1].open = False
     
-    #Windows creation
-    window1 = Window()
-    window1.open = True
+    #Rooms conditions setting
+    building.floors[0].rooms[0].busy = True
+    building.floors[0].rooms[0].temperature = 14
     
-    window2 = Window()
-    window2.open = False
+    building.floors[0].rooms[1].busy = True
+    building.floors[0].rooms[1].temperature = 25
     
-    #Rooms creation
-    room1 = Room("room1")
-    room1.busy = True
-    room1.temperature = 14
+    #FLOOR 2
+    #Windows conditions setting
+    building.floors[1].rooms[0].busy = False
+    building.floors[1].rooms[0].temperature = 15    
     
-    room2 = Room("room2")
-    room2.busy = True
-    room2.temperature = 25
-    
-    room3 = Room("room3")
-    room3.busy = False
-    room3.temperature = 15
-    
-    #Adding windows to rooms
-    room1.windows.append(window1)
-    room1.windows.append(window2)
-    
-    #Floors creation
-    floor1 = Floor("floor1")
-    floor2 = Floor("floor2")
-    
-    #Adding rooms to floors
-    floor1.rooms.append(room1)
-    floor1.rooms.append(room2)
-    
-    floor2.rooms.append(room3)
-    
-    #Building creation
-    building = Building()
-    
-    #Adding floors to buildings
-    building.floors.append(floor1)
-    building.floors.append(floor2)
-    
-    return building, day, time, classifyTemperature(temperature)
+    return day, time, classifyTemperature(temperature)
 
 #MAIN PROGRAM 
 if __name__ == "__main__":
+    #Building structure creation
+    building = loadJson()
     print("TEST 1:\n")
-    building, day, time, weather = test1()
+    day, time, weather = test1(building)
     printResult(building, day, time, weather)
     
+    
     print("\nTEST 2:\n")
-    building, day, time, weather = test2()
+    day, time, weather = test2(building)
     printResult(building, day, time, weather)
     
     print("\nTEST 3:\n")
-    building, day, time, weather = test3()
+    day, time, weather = test3(building)
     printResult(building, day, time, weather)
 
     
