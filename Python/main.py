@@ -1,5 +1,6 @@
 #CLASSES
 import json
+from interface import Visualization
 class Building:
     """_summary_
     """
@@ -160,6 +161,8 @@ if __name__ == "__main__":
         print("Invalid file!")
     else:
         printResult(building, day , time, weather)
+        v = Visualization(building)
+        v.run()
         
         
 
