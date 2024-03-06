@@ -1,2 +1,0 @@
-ture,
-                  room.natural

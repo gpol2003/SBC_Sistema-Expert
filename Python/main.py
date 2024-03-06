@@ -1,12 +1,12 @@
 #CLASSES
 import json
-
 class Building:
+    """_summary_
+    """
     def __init__(self):
         self.floors = []
         self.open = False
         self.alarm = False
-        
     def checkOpen(self, day = "", time = 0):
         accepted_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
         self.open = day in accepted_days and 8 <= time <= 20
@@ -159,8 +159,6 @@ if __name__ == "__main__":
     if err:
         print("Invalid file!")
     else:
-        print("TEST 1:\n")
-        #day, time, weather = test1(building)
         printResult(building, day , time, weather)
         
         
