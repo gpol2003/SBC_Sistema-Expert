@@ -1,0 +1,50 @@
+{
+    "day": "Monday",
+    "time": 10,
+    "temperature": 23,
+    "building": {
+        "floors": [
+        {
+            "name": "floor1",
+            "rooms": [
+                {
+                    "name": "room1",
+                    "busy": true,
+                    "temperature": 14,
+                    "windows": [
+                        {
+                            "name": "window1",
+                            "open": true
+                        },
+                        {
+                            "name": "window2",
+                            "open": false
+                        }
+                    ]
+                },
+                {
+                    "name": "room2",
+                    "busy": true,
+                    "temperature": 25,
+                    "windows": [
+                    ]
+                }
+
+            ]
+        }, 
+        {
+            "name": "floor2",
+            "rooms": [
+                {
+                    "name": "room3",
+                    "busy": false,
+                    "temperature": 15,
+                    "windows": [
+
+                    ]
+                }
+            ]
+        }
+        ]
+    }
+  }

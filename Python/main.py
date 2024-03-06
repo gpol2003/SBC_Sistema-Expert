@@ -67,25 +67,28 @@ class Window:
         
 
 #AUXILIAR FUNCTIONS
-def loadJson():
+def loadJson(filename):
     #Load data
-    f = open('Python/building_structure.json')
-    data = json.load(f)
-    
-    building = Building()
-    
-    for floor in data["floors"]:
-        new_floor = Floor(floor["name"])
-        for room in floor["rooms"]:
-            new_room = Room(room["name"])
-            for window in room["windows"]:
-                new_window = Window(window["name"])
-                new_room.windows.append(new_window)
-            new_floor.rooms.append(new_room)
-        building.floors.append(new_floor)
-        
-    f.close()
-    return building
+    try:
+        with open('Python/data/'+ filename + ".json") as f:
+            data = json.load(f)
+            building = Building()
+            for floor in data["building"]["floors"]:
+                new_floor = Floor(floor["name"])
+                for room in floor["rooms"]:
+                    new_room = Room(room["name"])
+                    new_room.busy = room["busy"]
+                    new_room.temperature = room["temperature"]
+                    for window in room["windows"]:
+                        new_window = Window(window["name"])
+                        new_window.open = window["open"]
+                        new_room.windows.append(new_window)
+                    new_floor.rooms.append(new_room)
+                building.floors.append(new_floor)
+            f.close()
+            return False, data["day"], data["time"], classifyTemperature(data["temperature"]), building
+    except FileNotFoundError:
+        return True, "", 0, "", None
 
 def transformBoolean(b):
     if b:
@@ -147,98 +150,20 @@ def debugBuilding(building):
             for window in room.windows:
                 print(window.name, window.open)
                 
-#TESTS   
-def test1(building):
-    day = "Monday"
-    time = 10
-    temperature = 23
-
-    #FLOOR 1
-    #Windows conditions setting
-    building.floors[0].rooms[0].windows[0].open = True
-
-    building.floors[0].rooms[0].windows[1].open = False
-    
-    #Rooms conditions setting
-    building.floors[0].rooms[0].busy = True
-    building.floors[0].rooms[0].temperature = 14
-    
-    building.floors[0].rooms[1].busy = True
-    building.floors[0].rooms[1].temperature = 25
-    
-    #FLOOR 2
-    #Windows conditions setting
-    building.floors[1].rooms[0].busy = False
-    building.floors[1].rooms[0].temperature = 15    
-    
-    return day, time, classifyTemperature(temperature)
-    
-def test2(building):
-    day = "Monday"
-    time = 10
-    temperature = 12
-
-    #FLOOR 1
-    #Windows conditions setting
-    building.floors[0].rooms[0].windows[0].open = True
-
-    building.floors[0].rooms[0].windows[1].open = False
-    
-    #Rooms conditions setting
-    building.floors[0].rooms[0].busy = True
-    building.floors[0].rooms[0].temperature = 14
-    
-    building.floors[0].rooms[1].busy = True
-    building.floors[0].rooms[1].temperature = 25
-    
-    #FLOOR 2
-    #Windows conditions setting
-    building.floors[1].rooms[0].busy = False
-    building.floors[1].rooms[0].temperature = 15    
-    
-    return day, time, classifyTemperature(temperature)
-
-def test3(building):
-    day = "Monday"
-    time = 22
-    temperature = 12
-
-    #FLOOR 1
-    #Windows conditions setting
-    building.floors[0].rooms[0].windows[0].open = True
-
-    building.floors[0].rooms[0].windows[1].open = False
-    
-    #Rooms conditions setting
-    building.floors[0].rooms[0].busy = True
-    building.floors[0].rooms[0].temperature = 14
-    
-    building.floors[0].rooms[1].busy = True
-    building.floors[0].rooms[1].temperature = 25
-    
-    #FLOOR 2
-    #Windows conditions setting
-    building.floors[1].rooms[0].busy = False
-    building.floors[1].rooms[0].temperature = 15    
-    
-    return day, time, classifyTemperature(temperature)
 
 #MAIN PROGRAM 
 if __name__ == "__main__":
+    file = input("Enter json filename (without .json): ")
     #Building structure creation
-    building = loadJson()
-    print("TEST 1:\n")
-    day, time, weather = test1(building)
-    printResult(building, day, time, weather)
-    
-    
-    print("\nTEST 2:\n")
-    day, time, weather = test2(building)
-    printResult(building, day, time, weather)
-    
-    print("\nTEST 3:\n")
-    day, time, weather = test3(building)
-    printResult(building, day, time, weather)
+    err, day, time, weather, building = loadJson(file)
+    if err:
+        print("Invalid file!")
+    else:
+        print("TEST 1:\n")
+        #day, time, weather = test1(building)
+        printResult(building, day , time, weather)
+        
+        
 
     
 
