@@ -10,7 +10,7 @@
   - [References](#references)
 
 ## Overview 
-This Python and Prolog Go program simulates an expert system that monitors and integrates functions for effective building climate management, ensuring optimal temperature, air quality, energy efficiency, and rapid detection of security and infrastructure issues.
+This Python and Prolog program simulates an expert system that monitors and integrates functions for effective building climate management, ensuring optimal temperature, air quality, energy efficiency, and rapid detection of security and infrastructure issues.
 
 The Python project additionally offers visualization capabilities to inspect the final state of the building. 
 
