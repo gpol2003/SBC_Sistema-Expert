@@ -42,7 +42,7 @@ In order to set the initial conditions of de building you have to add a json fil
 
 ### Format
 The json file must have the following format:
-```json
+```bash
 {
     "day": <day> (string),
     "time": <time> (int),
