@@ -132,8 +132,6 @@ temperatura_ambient(room3, 28).
 dia('diumenge').
 hora(10).
 
-
-
 % TEST 5
 % Edifici tancat
 habitacio_te_finestres(room1).

@@ -2,8 +2,6 @@
 import json
 from interface import Visualization
 class Building:
-    """_summary_
-    """
     def __init__(self):
         self.floors = []
         self.open = False
