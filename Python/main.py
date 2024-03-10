@@ -161,7 +161,7 @@ if __name__ == "__main__":
         print("Invalid file!")
     else:
         printResult(building, day , time, weather)
-        v = Visualization(building)
+        v = Visualization(building, day, time, weather)
         v.run()
         
         

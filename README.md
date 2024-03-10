@@ -141,4 +141,7 @@ Pol Guarch Bosom - pol.guarch@salle.url.edu
 ## References
 - [How to open files in Python](https://codedamn.com/news/python/check-if-a-file-exists-using-python)
 - [Working with json files in Python](https://www.w3schools.com/python/python_json.asp)
+- [Pyhton Tkinter Tutorial](https://www.geeksforgeeks.org/python-tkinter-tutorial/?ref=lbp)
+- [How to insert an image in a Tkinter canvas item?](https://www.tutorialspoint.com/how-to-insert-an-image-in-a-tkinter-canvas-item)
+- [Tkinter color chart](https://cs111.wellesley.edu/archive/cs111_fall14/public_html/labs/lab12/tkintercolor.html)
 
